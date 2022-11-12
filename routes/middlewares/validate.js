@@ -10,7 +10,8 @@ const validate = (schema) => async (req, res, next) => {
         return next();
     } catch (err) {
         let allErrors = {}
-        err.inner.forEach( err => {
+        console.log(err)
+        err.inner?.forEach( err => {
             let path = err.path.replace(/body\.|query\.|params\./i , '')
             allErrors[path] = err.message.replace(/body\.|query\.|params\./i , '')
         })

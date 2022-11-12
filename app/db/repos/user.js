@@ -4,9 +4,9 @@ class User {
 
     create(data) {
         return new Promise((reslove , reject) => {
-            let sql ='INSERT INTO users (name, email, password, salt, created_at) VALUES (?,?,?,?,?)'
+            let sql ='INSERT INTO users (name, phone, created_at) VALUES (?,?,?)'
     
-            db.run(sql, [ data.name, data.email, data.password, data.salt, Date.now() ], function (err, innerResult) {
+            db.run(sql, [ data.name, data.phone, Date.now() ], function (err, innerResult) {
                 if (err) return reject(err);
         
                 reslove();
