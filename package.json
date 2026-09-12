@@ -1,21 +1,46 @@
 {
-  "name": "nodejs-api-project",
-  "version": "0.0.0",
+  "name": "cv-platform-api",
+  "version": "1.0.0",
   "private": true,
+  "description": "REST API for a personal CV / resume platform with phone OTP auth",
+  "main": "dist/server.js",
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:deploy": "prisma migrate deploy",
+    "db:seed": "tsx prisma/seed.ts",
+    "test": "NODE_ENV=test jest --runInBand --forceExit",
+    "lint": "tsc --noEmit"
   },
   "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "cookie-parser": "~1.4.4",
+    "@prisma/client": "^5.22.0",
     "cors": "^2.8.5",
-    "debug": "~2.6.9",
-    "dotenv": "^16.0.1",
-    "express": "~4.16.1",
-    "jsonwebtoken": "^8.5.1",
-    "morgan": "~1.9.1",
-    "nodemon": "^2.0.19",
-    "sqlite3": "^5.0.11",
-    "yup": "^0.32.11"
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "swagger-ui-express": "^5.0.1",
+    "uuid": "^10.0.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.12",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/morgan": "^1.9.9",
+    "@types/node": "^20.14.10",
+    "@types/supertest": "^6.0.2",
+    "@types/swagger-ui-express": "^4.1.6",
+    "@types/uuid": "^10.0.0",
+    "jest": "^29.7.0",
+    "prisma": "^5.22.0",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.2.3",
+    "tsx": "^4.16.2",
+    "typescript": "^5.5.3"
   }
 }

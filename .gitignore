@@ -56,6 +56,16 @@ typings/
 
 # dotenv environment variables file
 .env
+.env.test
 
 # next.js build output
 .next
+
+# Build / local DB
+dist/
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+prisma/*.db
+prisma/*.db-journal
