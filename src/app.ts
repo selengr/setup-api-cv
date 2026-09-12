@@ -19,15 +19,23 @@ export function createApp() {
   app.get('/api', (_req, res) => {
     res.json({
       status: 'success',
-      name: 'CV Platform API',
+      name: 'portfolio-api',
       docs: '/api/docs',
     });
+  });
+
+  app.get('/api/health', (_req, res) => {
+    res.json({ status: 'ok', uptime: process.uptime() });
   });
 
   app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
   app.use('/api/auth', authRoutes);
   app.use('/api/users', usersRoutes);
   app.use('/api/cv', cvRoutes);
+
+  app.use((_req, res) => {
+    res.status(404).json({ status: 'fail', message: 'route not found' });
+  });
 
   app.use(errorHandler);
   return app;
