@@ -116,6 +116,42 @@ export async function addExperience(userId: number, data: {
   return prisma.experience.create({ data: { ...data, profileId: profile.id } });
 }
 
+export async function updateExperience(
+  userId: number,
+  id: number,
+  data: Partial<{
+    company: string;
+    title: string;
+    location: string | null;
+    startDate: string;
+    endDate: string | null;
+    description: string | null;
+  }>
+) {
+  const item = await prisma.experience.findUnique({ where: { id } });
+  if (!item) throw new AppError('not found', 404);
+  await assertOwns(userId, item.profileId);
+  return prisma.experience.update({ where: { id }, data });
+}
+
+export async function updateEducation(
+  userId: number,
+  id: number,
+  data: Partial<{
+    school: string;
+    degree: string | null;
+    field: string | null;
+    startDate: string | null;
+    endDate: string | null;
+    description: string | null;
+  }>
+) {
+  const item = await prisma.education.findUnique({ where: { id } });
+  if (!item) throw new AppError('not found', 404);
+  await assertOwns(userId, item.profileId);
+  return prisma.education.update({ where: { id }, data });
+}
+
 export async function addEducation(userId: number, data: {
   school: string;
   degree?: string | null;
