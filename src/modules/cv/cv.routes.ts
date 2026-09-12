@@ -49,6 +49,20 @@ router.post('/me/experiences', auth, validate(experienceSchema), async (req, res
   }
 });
 
+router.patch(
+  '/me/experiences/:id',
+  auth,
+  validate(experienceSchema.partial()),
+  async (req, res, next) => {
+    try {
+      const item = await cvService.updateExperience(req.user!.id, Number(req.params.id), req.body);
+      res.json({ status: 'success', experience: item });
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
 router.delete('/me/experiences/:id', auth, async (req, res, next) => {
   try {
     await cvService.deleteExperience(req.user!.id, Number(req.params.id));
@@ -66,6 +80,20 @@ router.post('/me/educations', auth, validate(educationSchema), async (req, res, 
     next(err);
   }
 });
+
+router.patch(
+  '/me/educations/:id',
+  auth,
+  validate(educationSchema.partial()),
+  async (req, res, next) => {
+    try {
+      const item = await cvService.updateEducation(req.user!.id, Number(req.params.id), req.body);
+      res.json({ status: 'success', education: item });
+    } catch (err) {
+      next(err);
+    }
+  }
+);
 
 router.delete('/me/educations/:id', auth, async (req, res, next) => {
   try {
