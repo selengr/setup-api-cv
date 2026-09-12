@@ -1,52 +1,64 @@
-# CV Platform API
+# portfolio-api
 
-TypeScript REST API for a personal **CV / resume platform**.
+Backend API for a personal portfolio / resume page.
 
-Phone OTP login → JWT → manage profile, experience, education, skills, projects → publish a public CV at `/api/cv/public/:slug`.
+I started this a while ago as a small Node API. Later I rewrote it in TypeScript and cleaned it up.
+The idea is simple: you sign up with your phone, fill in work history / education / skills / projects,
+then share a public link like `/api/cv/public/your-name`.
 
-## Stack
+Right now OTP codes are printed in the server log (dev mode). In a real app you'd send them by SMS.
 
-- Node.js + Express + TypeScript
-- Prisma + SQLite (swap `DATABASE_URL` for Postgres in production)
-- Zod validation, JWT auth, Swagger UI
-- Jest + Supertest
-- Docker Compose
+## What you can do
 
-## Quick start
+- register / login with Iranian phone number (OTP + JWT)
+- edit your profile
+- add experience, education, skills, projects
+- open a public portfolio page by slug (no login needed)
+
+## Tech
+
+Node, Express, TypeScript, Prisma, SQLite, Zod, Jest.
+
+Swagger is at `/api/docs` if you want to click around the endpoints.
+
+## Run it
 
 ```bash
 cp .env.example .env
 npm install
-npx prisma migrate dev --name init
+npx prisma migrate dev
 npm run db:seed
 npm run dev
 ```
 
-- API: http://localhost:4000/api  
-- Docs: http://localhost:4000/api/docs  
-- Demo public CV (after seed): http://localhost:4000/api/cv/public/hesam-demo  
+Then open:
 
-## Auth flow
+- http://localhost:4000/api
+- http://localhost:4000/api/docs
+- http://localhost:4000/api/cv/public/hesam-demo  (demo user from seed)
 
-1. `POST /api/auth/register` `{ "name", "phone" }`
-2. `POST /api/auth/login` `{ "phone" }` → returns OTP session `token` (and `devCode` when `OTP_DEV_MODE=true`)
-3. `POST /api/auth/login/verify-phone` `{ "token", "code" }` → JWT
-4. Send `Authorization: Bearer <jwt>` on protected routes
+Health check: `GET /api/health`
 
-Iranian phone formats accepted: `09xxxxxxxxx`, `+989...`, `00989...`.
+## Quick auth example
 
-## Main endpoints
+```bash
+# 1) register
+curl -X POST http://localhost:4000/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Reza","phone":"09121234567"}'
 
-| Method | Path | Auth | Description |
-|--------|------|------|-------------|
-| GET | `/api/cv/public/:slug` | no | Public CV |
-| GET | `/api/cv/me` | yes | Full owner CV |
-| PATCH | `/api/cv/me/profile` | yes | Update headline/summary/... |
-| POST | `/api/cv/me/experiences` | yes | Add job |
-| POST | `/api/cv/me/educations` | yes | Add education |
-| POST | `/api/cv/me/skills` | yes | Add skill |
-| POST | `/api/cv/me/projects` | yes | Add project |
-| GET/PATCH | `/api/users/me` | yes | Account + slug |
+# 2) login -> get otp session token (+ devCode in response when OTP_DEV_MODE=true)
+curl -X POST http://localhost:4000/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"phone":"09121234567"}'
+
+# 3) verify code -> get JWT
+curl -X POST http://localhost:4000/api/auth/login/verify-phone \
+  -H "Content-Type: application/json" \
+  -d '{"token":"OTP_SESSION_ID","code":"123456"}'
+```
+
+Put the JWT in header like: `Authorization: Bearer YOUR_TOKEN`
 
 ## Docker
 
@@ -61,14 +73,4 @@ docker compose up --build
 npm test
 ```
 
-## Project layout
-
-```
-src/
-  modules/auth|users|cv
-  middleware/
-  services/
-  docs/swagger.ts
-prisma/schema.prisma
-tests/
-```
+That's pretty much it. If something is broken, open an issue or just fix it and PR.
