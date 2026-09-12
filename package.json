@@ -1,8 +1,8 @@
 {
-  "name": "cv-platform-api",
+  "name": "portfolio-api",
   "version": "1.0.0",
   "private": true,
-  "description": "REST API for a personal CV / resume platform with phone OTP auth",
+  "description": "REST API for a personal portfolio / resume page with phone OTP auth",
   "main": "dist/server.js",
   "scripts": {
     "dev": "tsx watch src/server.ts",
