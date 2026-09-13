@@ -12,9 +12,14 @@ import cvRoutes from './modules/cv/cv.routes';
 export function createApp() {
   const app = express();
 
+  app.disable('x-powered-by');
   app.use(morgan(env.isTest ? 'tiny' : 'dev'));
-  app.use(express.json());
-  app.use(cors({ origin: env.corsOrigin }));
+  app.use(express.json({ limit: '100kb' }));
+  app.use(
+    cors({
+      origin: env.corsOrigin === '*' ? true : env.corsOrigin,
+    })
+  );
 
   app.get('/api', (_req, res) => {
     res.json({

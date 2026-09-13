@@ -1,4 +1,5 @@
 import { AppError } from '../../middleware/errorHandler';
+import { env } from '../../config/env';
 import { prisma } from '../../db/prisma';
 import { createOtp, deleteOtp, verifyOtp } from '../../services/otp';
 import { createToken } from '../../services/token';
@@ -47,7 +48,7 @@ export async function requestLogin(phoneRaw: string) {
   return {
     status: 'success' as const,
     token: otp.id,
-    ...(process.env.OTP_DEV_MODE === 'true' ? { devCode: otp.code } : {}),
+    ...(env.otpDevMode ? { devCode: otp.code } : {}),
   };
 }
 
