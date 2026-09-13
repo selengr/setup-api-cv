@@ -8,12 +8,14 @@ export async function createOtp(phone: string): Promise<{ id: string; code: stri
   const id = uuidv4();
   const expiresAt = new Date(Date.now() + env.otpTtlSeconds * 1000);
 
+  // drop old codes for this phone so we don't keep junk around
+  await prisma.phoneVerification.deleteMany({ where: { phone } });
+
   await prisma.phoneVerification.create({
     data: { id, phone, code, expiresAt },
   });
 
   if (env.otpDevMode) {
-    // Dev/demo only — never log OTPs in real production SMS flow
     console.log(`[OTP] phone=${phone} code=${code} (expires in ${env.otpTtlSeconds}s)`);
   }
 
