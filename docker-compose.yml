@@ -7,12 +7,14 @@ services:
       PORT: 4000
       NODE_ENV: production
       DATABASE_URL: file:/data/prod.db
-      TOKEN_KEY: ${TOKEN_KEY:-change-me-in-production-please}
-      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:3000}
+      TOKEN_KEY: ${TOKEN_KEY:?set TOKEN_KEY before running}
+      CORS_ORIGIN: ${CORS_ORIGIN:-*}
       OTP_TTL_SECONDS: 300
-      OTP_DEV_MODE: "true"
+      # keep true only while testing; turn off when you wire real SMS
+      OTP_DEV_MODE: ${OTP_DEV_MODE:-false}
     volumes:
-      - cv-data:/data
+      - portfolio-data:/data
+    restart: unless-stopped
 
 volumes:
-  cv-data:
+  portfolio-data:
