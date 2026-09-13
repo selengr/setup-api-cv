@@ -18,7 +18,7 @@ async function main() {
       profile: {
         create: {
           headline: 'Full-stack developer',
-          summary: 'Sample CV seeded for local demo.',
+          summary: 'Sample portfolio seeded for local demo.',
           location: 'Tehran',
           email: 'demo@example.com',
           experiences: {
@@ -53,9 +53,9 @@ async function main() {
           projects: {
             create: [
               {
-                name: 'CV Platform API',
-                url: 'https://github.com/selengr/setup-api-cv',
-                description: 'Resume/CV REST API with OTP auth',
+                name: 'portfolio-api',
+                url: 'https://github.com/selengr/portfolio-api',
+                description: 'Portfolio / resume REST API with OTP auth',
                 techStack: 'Express, TypeScript, Prisma, SQLite',
               },
             ],
