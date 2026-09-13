@@ -3,11 +3,14 @@
   "version": "1.0.0",
   "private": true,
   "description": "REST API for a personal portfolio / resume page with phone OTP auth",
-  "main": "dist/server.js",
+  "main": "dist/src/server.js",
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
-    "start": "node dist/server.js",
+    "start": "node dist/src/server.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:deploy": "prisma migrate deploy",
@@ -15,6 +18,14 @@
     "test": "NODE_ENV=test jest --runInBand --forceExit",
     "lint": "tsc --noEmit"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/selengr/portfolio-api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/selengr/portfolio-api/issues"
+  },
+  "homepage": "https://github.com/selengr/portfolio-api#readme",
   "dependencies": {
     "@prisma/client": "^5.22.0",
     "cors": "^2.8.5",
