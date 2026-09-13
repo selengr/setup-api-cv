@@ -16,9 +16,11 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx prisma generate
+      - run: npm run lint
       - run: npm test
         env:
           NODE_ENV: test
           TOKEN_KEY: ci-test-secret
           DATABASE_URL: file:./test.db
           OTP_DEV_MODE: "true"
+      - run: npm run build

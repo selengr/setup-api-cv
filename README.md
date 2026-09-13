@@ -6,7 +6,10 @@ I started this a while ago as a small Node API. Later I rewrote it in TypeScript
 The idea is simple: you sign up with your phone, fill in work history / education / skills / projects,
 then share a public link like `/api/cv/public/your-name`.
 
-Right now OTP codes are printed in the server log (dev mode). In a real app you'd send them by SMS.
+Right now OTP codes are printed in the server log when `OTP_DEV_MODE=true`.
+In a real deploy you'd turn that off and send SMS instead.
+
+Repo: https://github.com/selengr/portfolio-api
 
 ## What you can do
 
@@ -19,11 +22,11 @@ Login is rate limited a bit so people can't spam OTP forever.
 
 ## Tech
 
-Node, Express, TypeScript, Prisma, SQLite, Zod, Jest.
+Node, Express, TypeScript, Prisma, SQLite, Zod, Jest, Docker.
 
 Swagger is at `/api/docs` if you want to click around the endpoints.
 
-## Run it
+## Run it locally
 
 ```bash
 cp .env.example .env
@@ -38,8 +41,7 @@ Then open:
 - http://localhost:4000/api
 - http://localhost:4000/api/docs
 - http://localhost:4000/api/cv/public/hesam-demo  (demo user from seed)
-
-Health check: `GET /api/health`
+- http://localhost:4000/api/health
 
 ## Quick auth example
 
@@ -49,7 +51,7 @@ curl -X POST http://localhost:4000/api/auth/register \
   -H "Content-Type: application/json" \
   -d '{"name":"Reza","phone":"09121234567"}'
 
-# 2) login -> get otp session token (+ devCode in response when OTP_DEV_MODE=true)
+# 2) login -> get otp session token (+ devCode when OTP_DEV_MODE=true)
 curl -X POST http://localhost:4000/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"phone":"09121234567"}'
@@ -69,10 +71,19 @@ export TOKEN_KEY=some-long-secret
 docker compose up --build
 ```
 
+By default `OTP_DEV_MODE` is off in docker. Set `OTP_DEV_MODE=true` if you still need codes in the logs.
+
 ## Tests
 
 ```bash
 npm test
 ```
 
-That's pretty much it. If something is broken, open an issue or just fix it and PR.
+## Notes before you deploy
+
+- change `TOKEN_KEY` to something long and random
+- set `CORS_ORIGIN` to your frontend URL
+- keep `OTP_DEV_MODE=false` in real environments
+- SQLite is fine for demo; use Postgres later if you need it
+
+That's pretty much it.
