@@ -12,8 +12,10 @@ Right now OTP codes are printed in the server log (dev mode). In a real app you'
 
 - register / login with Iranian phone number (OTP + JWT)
 - edit your profile
-- add experience, education, skills, projects
+- add / edit / delete experience, education, skills, projects
 - open a public portfolio page by slug (no login needed)
+
+Login is rate limited a bit so people can't spam OTP forever.
 
 ## Tech
 

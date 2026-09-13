@@ -81,4 +81,10 @@ describe('auth + public CV flow', () => {
     expect(res.body.cv.headline).toBe('Backend developer');
     expect(res.body.cv.experiences.length).toBe(1);
   });
+
+  it('health endpoint works', async () => {
+    const res = await request(app).get('/api/health');
+    expect(res.status).toBe(200);
+    expect(res.body.status).toBe('ok');
+  });
 });
