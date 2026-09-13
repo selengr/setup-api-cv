@@ -113,6 +113,15 @@ router.post('/me/skills', auth, validate(skillSchema), async (req, res, next) =>
   }
 });
 
+router.patch('/me/skills/:id', auth, validate(skillSchema.partial()), async (req, res, next) => {
+  try {
+    const item = await cvService.updateSkill(req.user!.id, Number(req.params.id), req.body);
+    res.json({ status: 'success', skill: item });
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.delete('/me/skills/:id', auth, async (req, res, next) => {
   try {
     await cvService.deleteSkill(req.user!.id, Number(req.params.id));
@@ -126,6 +135,15 @@ router.post('/me/projects', auth, validate(projectSchema), async (req, res, next
   try {
     const item = await cvService.addProject(req.user!.id, req.body);
     res.status(201).json({ status: 'success', project: item });
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.patch('/me/projects/:id', auth, validate(projectSchema.partial()), async (req, res, next) => {
+  try {
+    const item = await cvService.updateProject(req.user!.id, Number(req.params.id), req.body);
+    res.json({ status: 'success', project: item });
   } catch (err) {
     next(err);
   }

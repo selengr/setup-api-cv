@@ -169,6 +169,17 @@ export async function addSkill(userId: number, data: { name: string; level?: str
   return prisma.skill.create({ data: { ...data, profileId: profile.id } });
 }
 
+export async function updateSkill(
+  userId: number,
+  id: number,
+  data: Partial<{ name: string; level: string | null }>
+) {
+  const item = await prisma.skill.findUnique({ where: { id } });
+  if (!item) throw new AppError('not found', 404);
+  await assertOwns(userId, item.profileId);
+  return prisma.skill.update({ where: { id }, data });
+}
+
 export async function addProject(userId: number, data: {
   name: string;
   url?: string | null;
@@ -181,6 +192,28 @@ export async function addProject(userId: number, data: {
       ...data,
       url: data.url === '' ? null : data.url,
       profileId: profile.id,
+    },
+  });
+}
+
+export async function updateProject(
+  userId: number,
+  id: number,
+  data: Partial<{
+    name: string;
+    url: string | null;
+    description: string | null;
+    techStack: string | null;
+  }>
+) {
+  const item = await prisma.project.findUnique({ where: { id } });
+  if (!item) throw new AppError('not found', 404);
+  await assertOwns(userId, item.profileId);
+  return prisma.project.update({
+    where: { id },
+    data: {
+      ...data,
+      url: data.url === '' ? null : data.url,
     },
   });
 }
