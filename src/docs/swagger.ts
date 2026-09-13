@@ -1,10 +1,9 @@
 export const swaggerDocument = {
   openapi: '3.0.3',
   info: {
-    title: 'CV Platform API',
+    title: 'portfolio-api',
     version: '1.0.0',
-    description:
-      'Personal CV / resume platform API with phone OTP authentication, JWT, and public CV pages.',
+    description: 'Personal portfolio / resume API. Phone OTP login, JWT, public profile by slug.',
   },
   servers: [{ url: 'http://localhost:4000' }],
   components: {
